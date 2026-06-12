@@ -26,7 +26,7 @@
   const loaderPulse = $("#loaderPulse");
 
   const loaderSteps = [
-    { p: 8, text: "FALCON HEAVY", code: "" },
+    { p: 8, text: "STARMAN", code: "" },
     { p: 22, text: "SPACEX", code: "" },
     { p: 38, text: "ROADSTER", code: "" },
     { p: 55, text: "STARMAN", code: "" },
