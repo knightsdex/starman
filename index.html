@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="assets/x-logo.webp">
+  <title>FALCON HEAVY</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&family=Orbitron:wght@500;700;900&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="./styles-BRVtuNnp.css" />
+</head>
+
+<body>
+
+  <!-- ============================================
+     CINEMATIC LOADER
+     ============================================ -->
+  <div class="loader" id="loader">
+    <canvas class="loader__particles" id="loaderParticles"></canvas>
+    <div class="loader__mars-glow"></div>
+    <div class="loader__smoke"></div>
+    <div class="loader__center">
+      <div class="loader__x">
+        <img src="assets/x-logo.webp" alt="X Logo" class="loader__x-image">
+        <defs>
+          <linearGradient id="xMetal" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#e7e8eb" />
+            <stop offset="35%" stop-color="#9a9ba0" />
+            <stop offset="55%" stop-color="#f4f4f6" />
+            <stop offset="100%" stop-color="#5a5b5f" />
+          </linearGradient>
+        </defs>
+        <path d="M30 30 L90 100 L30 170 L70 170 L100 130 L130 170 L170 170 L110 100 L170 30 L130 30 L100 70 L70 30 Z"
+          fill="url(#xMetal)" stroke="#1a1a1a" stroke-width="1.2" />
+        </svg>
+        <div class="loader__sparks"></div>
+      </div>
+      <div class="loader__signal">
+        <span class="loader__signal-bar"></span>
+        <span class="loader__signal-text" id="loaderText">ESTABLISHING UPLINK</span>
+        <span class="loader__signal-bar"></span>
+      </div>
+      <div class="loader__progress">
+        <div class="loader__progress-fill" id="loaderFill"></div>
+      </div>
+      <div class="loader__meta">
+        <!-- <span>TRANSMISSION ID</span> -->
+        <span id="loaderCode">X-69420-//-INIT</span>
+      </div>
+    </div>
+    <div class="loader__pulse" id="loaderPulse"></div>
+  </div>
+
+  <!-- ============================================
+     AMBIENT BACKGROUND LAYERS (whole page)
+     ============================================ -->
+  <div class="ambient">
+    <div class="ambient__stars"></div>
+    <div class="ambient__nebula"></div>
+    <canvas class="ambient__embers" id="embersCanvas"></canvas>
+    <div class="ambient__scanlines"></div>
+    <div class="ambient__vignette"></div>
+  </div>
+
+  <!-- ============================================
+     NAVIGATION
+     ============================================ -->
+  <header class="nav">
+    <div class="nav__inner">
+      <a class="nav__brand" href="#hero">
+        <span class="nav__brand-text">FALCON<span class="orange"> HEAVY</span></span>
+      </a>
+      <nav class="nav__links">
+        <a href="#prophecy">ABOUT</a>
+        <!-- <a href="#archive">ARCHIVE</a> -->
+        <a href="#tokenomics">TOKENOMICS</a>
+        <a href="#gallery">GALLERY</a>
+      </nav>
+      <div class="nav__status">
+        <span class="nav__dot"></span>
+        <span class="mono">SIGNAL // LIVE</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================================
+     HERO — LAYERED COMPOSITION
+     Back → front:
+       L0  stars        (deep space)
+       L1  nebula       (subtle color wash)
+       L2  mars         (panoramic terrain)
+       L3  horizon glow (orange atmospheric)
+       L4  dust         (mid-ground fog)
+       L5  girl-left    (far left)
+       L6  girl-right   (far right + cigarette smoke)
+       L7  x-glow       (orange halo behind logo)
+       L8  x-logo       (focal point)
+       L9  hud          (scan lines + corners + small text)
+     ============================================ -->
+  <section class="hero" id="hero">
+
+    <!-- L0 — Stars -->
+    <div class="layer layer--stars" data-depth="0.02" id="layerStars"></div>
+
+    <!-- L1 — Nebula color wash -->
+    <div class="layer layer--nebula" data-depth="0.04"></div>
+
+    <!-- L2 — Mars terrain (bottom-aligned) -->
+    <div class="layer layer--mars" data-depth="0.10">
+      <img src="assets/mars.png" alt="" class="layer__img layer__img--mars" />
+    </div>
+
+    <!-- L3 — Horizon orange glow -->
+    <div class="layer layer--horizon" data-depth="0.06"></div>
+
+    <!-- L4 — Floating dust / mid-fog -->
+    <div class="layer layer--dust" data-depth="0.08"></div>
+
+    <!-- L5 — Left anime girl -->
+    <div class="layer layer--girl-left" data-depth="0.16">
+      <img src="assets/girl-left.png" alt="" class="layer__img layer__img--girl-left" />
+      <div class="layer__edge layer__edge--left"></div>
+    </div>
+
+    <!-- L6 — Right anime girl + cigarette smoke -->
+    <div class="layer layer--girl-right" data-depth="0.16">
+      <img src="assets/girl-right.png" alt="" class="layer__img layer__img--girl-right" />
+      <div class="layer__edge layer__edge--right"></div>
+      <div class="cig-smoke">
+        <span class="cig-smoke__p cig-smoke__p--1"></span>
+        <span class="cig-smoke__p cig-smoke__p--2"></span>
+        <span class="cig-smoke__p cig-smoke__p--3"></span>
+        <span class="cig-smoke__p cig-smoke__p--4"></span>
+        <span class="cig-smoke__p cig-smoke__p--5"></span>
+      </div>
+    </div>
+
+    <!-- L7 — Orange halo behind logo -->
+    <div class="layer layer--xglow" data-depth="0.05"></div>
+
+    <!-- L8 — Metallic X logo focal point -->
+    <div class="layer layer--xlogo" data-depth="0.22">
+      <div class="x-shell">
+        <h2 class="section-title">Starman</h2>
+      </div>
+    </div>
+
+    <!-- L9 — HUD overlay -->
+    <div class="hud hud--hero">
+      <!-- corner brackets -->
+      <!-- <div class="hud__corner hud__corner--tl">
+      <span class="mono dim">// SECTOR</span><span class="mono">M-4 / RED</span>
+    </div> -->
+      <!-- <div class="hud__corner hud__corner--tr">
+      <span class="mono dim">// FREQ</span><span class="mono">69.420 MHz</span>
+    </div> -->
+      <!-- <div class="hud__corner hud__corner--bl">
+      <span class="mono dim">// COORD</span><span class="mono">14.5684°N · 175.4729°E</span>
+    </div>
+    <div class="hud__corner hud__corner--br">
+      <span class="mono dim">// STATUS</span><span class="mono orange">IGNITED</span>
+    </div> -->
+
+      <!-- scanning line -->
+      <div class="hud__scan"></div>
+
+      <!-- floating HUD chips -->
+      <div class="hud__chip hud__chip--top">
+        <span class="hud__chip-dot"></span>
+        <span class="mono">FALCON HEAVY</span>
+      </div>
+
+      <!-- <div class="hud__chip hud__chip--left">
+      <span class="mono dim">▸ CH 04</span>
+      <span class="mono">MARS FREQUENCY ACTIVE</span>
+      <div class="hud__bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    </div> -->
+
+      <!-- <div class="hud__chip hud__chip--right">
+      <span class="mono dim">▸ UPLINK</span>
+      <span class="mono orange">TRANSMISSION LIVE</span>
+      <span class="hud__pulse-dot"></span>
+    </div> -->
+
+      <div class="hud__chip hud__chip--bottom">
+        <span class="mono">SPACEX</span>
+      </div>
+
+      <!-- subtle crosshair on logo -->
+      <div class="hud__reticle">
+        <span class="hud__reticle-ring"></span>
+        <span class="hud__reticle-mark hud__reticle-mark--t"></span>
+        <span class="hud__reticle-mark hud__reticle-mark--r"></span>
+        <span class="hud__reticle-mark hud__reticle-mark--b"></span>
+        <span class="hud__reticle-mark hud__reticle-mark--l"></span>
+      </div>
+    </div>
+
+    <!-- hero CTAs (kept, smaller, no giant text) -->
+    <div class="hero__cta-floor">
+      <div class="hero__cta">
+        <a href="https://app.uniswap.org/swap?chain=mainnet&inputCurrency=NATIVE&outputCurrency=0xComingSoon"
+          class="btn btn--primary">
+          <span class="btn__label">BUY $STARMAN</span>
+          <span class="btn__arrow">↗</span>
+          <span class="btn__glow"></span>
+        </a>
+        <a href="https://t.me/falconheavyoneth" class="btn btn--ghost" target="_blank" rel="noopener">
+          <span class="btn__label">JOIN TELEGRAM</span>
+          <span class="btn__arrow">→</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ticker -->
+    <!-- <div class="hero__ticker">
+    <div class="ticker__track">
+      <span>SIGNAL DETECTED // 69420</span><span class="dot">●</span>
+      <span>WE DON'T FOLLOW. WE LAUNCH.</span><span class="dot">●</span>
+      <span>IGNITE THE SIGNAL</span><span class="dot">●</span>
+      <span>THE PROPHECY WILL BE FULFILLED</span><span class="dot">●</span>
+      <span>TO THE MOON WAS NEVER ENOUGH</span><span class="dot">●</span>
+      <span>MARS OR DIE</span><span class="dot">●</span>
+      <span>SIGNAL DETECTED // 69420</span><span class="dot">●</span>
+      <span>WE DON'T FOLLOW. WE LAUNCH.</span><span class="dot">●</span>
+      <span>IGNITE THE SIGNAL</span><span class="dot">●</span>
+      <span>THE PROPHECY WILL BE FULFILLED</span><span class="dot">●</span>
+      <span>TO THE MOON WAS NEVER ENOUGH</span><span class="dot">●</span>
+      <span>MARS OR DIE</span><span class="dot">●</span>
+    </div>
+  </div> -->
+  </section>
+
+  <!-- ============================================
+     PROPHECY / ABOUT
+     ============================================ -->
+  <section class="prophecy" id="prophecy">
+    <div class="container">
+
+      <div class="section-head">
+        <span class="mono dim">// CHAPTER 01</span>
+        <h2 class="section-title">
+          ABOUT <span class="orange">STARMAN</span>
+        </h2>
+        <div class="section-rule"></div>
+      </div>
+
+      <div class="prophecy__grid">
+
+        <!-- LEFT SIDE -->
+        <div class="prophecy__lore reveal">
+
+          <p class="prophecy__lead">
+            In 2018, SpaceX launched Falcon Heavy carrying an unexpected payload: Elon Musk's personal Tesla Roadster.
+            Strapped inside the driver's seat was STARMAN.
+          </p>
+          <p class="prophecy__lead">
+            The dashboard displayed "DON'T PANIC!" while a circuit board in the trunk bore the words: "Made on Earth by
+            humans."
+          </p>
+          <p class="prophecy__lead">
+            Escaping Earth's gravity, STARMAN drifted into deep space — proving exploration was no longer just
+            engineering, but storytelling on a global scale.
+          </p>
+          <p class="prophecy__lead">
+            Today, STARMAN is still out there orbiting the Sun.<br /> He remains an active symbol of humanity's future
+            in making life multiplanetary. He is featured in the SpaceX IPO SEC filing prospectus, IPO Roadshow
+            presentation, and various official marketing videos.
+          </p>
+
+        </div>
+
+        <!-- RIGHT SIDE -->
+        <aside class="prophecy__card reveal">
+
+          <div class="prophecy__card-body">
+
+            <video controls>
+              <source src="/assets/1.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+
+
+
+          </div>
+
+
+
+        </aside>
+
+      </div>
+
+    </div>
+    </div>
+  </section>
+  <!-- ============================================
+     TRANSMISSION ARCHIVE
+     ============================================ -->
+
+  <!-- ============================================
+     TOKENOMICS
+     ============================================ -->
+  <section class="tokenomics" id="tokenomics">
+    <div class="container">
+      <div class="section-head">
+        <span class="mono dim">// CHAPTER 02</span>
+        <h2 class="section-title">TOKE<span class="orange">NOMICS</span></h2>
+        <p class="section-sub mono">Burned. Renounced. Untouchable.</p>
+        <div class="section-rule"></div>
+      </div>
+
+      <div class="tok__contract reveal">
+        <div class="tok__contract-label mono dim">// CONTRACT ADDRESS</div>
+        <div class="tok__contract-row">
+          <code class="tok__contract-addr" id="ca">0xComingSoon</code>
+          <button class="btn btn--ghost btn--small" id="copyBtn">
+            <span class="btn__label" id="copyLabel">COPY</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="tok__grid">
+        <div class="tok-card reveal">
+          <div class="tok-card__top">
+            <span class="mono dim">// 01</span>
+            <span class="tok-card__chip">SUPPLY</span>
+          </div>
+          <div class="tok-card__big">1,000,000,000</div>
+          <div class="tok-card__sub mono">FIXED · NO MINT FUNCTION</div>
+          <div class="tok-card__bar"><span style="width:100%"></span></div>
+          <div class="tok-card__glint"></div>
+        </div>
+
+        <div class="tok-card reveal">
+          <div class="tok-card__top">
+            <span class="mono dim">// 02</span>
+            <span class="tok-card__chip">TAX</span>
+          </div>
+          <div class="tok-card__big"><span class="orange">0</span> / <span class="orange">0</span></div>
+          <div class="tok-card__sub mono">BUY · SELL · NO HIDDEN FEES</div>
+          <div class="tok-card__bar"><span style="width:2%"></span></div>
+          <div class="tok-card__glint"></div>
+        </div>
+
+        <div class="tok-card reveal">
+          <div class="tok-card__top">
+            <span class="mono dim">// 03</span>
+            <span class="tok-card__chip">LIQUIDITY</span>
+          </div>
+          <div class="tok-card__big">BURNT <span class="orange">🔥</span></div>
+          <div class="tok-card__sub mono">LP LOCKED · IRREVERSIBLE</div>
+          <div class="tok-card__bar"><span style="width:100%"></span></div>
+          <div class="tok-card__glint"></div>
+        </div>
+
+        <div class="tok-card reveal">
+          <div class="tok-card__top">
+            <span class="mono dim">// 04</span>
+            <span class="tok-card__chip">OWNERSHIP</span>
+          </div>
+          <div class="tok-card__big">RENOUNCED</div>
+          <div class="tok-card__sub mono">CONTRACT FROZEN · ZERO ADMIN</div>
+          <div class="tok-card__bar"><span style="width:100%"></span></div>
+          <div class="tok-card__glint"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+     GALLERY / MEDIA
+     ============================================ -->
+
+
+  <section class="gallery" id="gallery">
+    <div class="container">
+      <div class="section-head">
+        <span class="mono dim">// CHAPTER 03</span>
+        <h2 class="section-title">GALLERY</h2>
+
+        <div class="section-rule"></div>
+      </div>
+
+      <section class="relative py-20 px-6">
+        <div class="mx-auto max-w-5xl">
+          <div class="relative group" style="opacity: 1; transform: none;">
+            <div class="relative overflow-hidden rounded-2xl border border-white/10 glass"
+              style="box-shadow:0 0 50px rgba(239,68,68,0.15), 0 0 90px rgba(239,68,68,0.12)">
+              <div class="overflow-hidden">
+                <div class="flex" style="transform: translate3d(0px, 0px, 0px);">
+                  <div class="relative min-w-0 flex-[0_0_100%] aspect-video"
+                    style="transform: translate3d(0px, 0px, 0px);"><img src="/assets/gallery-1-Ep2_3yg6.jpg"
+                      alt="Falcon Heavy lifting off from Kennedy Space Center" loading="lazy"
+                      class="w-full h-full object-cover">
+                    <div
+                      class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent">
+                    </div>
+                  </div>
+                  <div class="relative min-w-0 flex-[0_0_100%] aspect-video"><img src="/assets/gallery-2-CZAAb6OZ.jpg"
+                      alt="Starman cockpit view with Earth in the distance" loading="lazy"
+                      class="w-full h-full object-cover">
+                    <div
+                      class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent">
+                    </div>
+                  </div>
+                  <div class="relative min-w-0 flex-[0_0_100%] aspect-video"><img src="/assets/gallery-3-Dyb8D_Ke.jpg"
+                      alt="Starman driving the Tesla Roadster above Earth" loading="lazy"
+                      class="w-full h-full object-cover">
+                    <div
+                      class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent">
+                    </div>
+                  </div>
+                  <div class="relative min-w-0 flex-[0_0_100%] aspect-video"><img src="/assets/gallery-4-CaY5jbl3.jpg"
+                      alt="Starman and Earth from behind the Roadster" loading="lazy"
+                      class="w-full h-full object-cover">
+                    <div
+                      class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent">
+                    </div>
+                  </div>
+                  <div class="relative min-w-0 flex-[0_0_100%] aspect-video"><img src="/assets/gallery-6-BxPIAGSz.jpg"
+                      alt="Made on Earth by humans — circuit board detail" loading="lazy"
+                      class="w-full h-full object-cover">
+                    <div
+                      class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent">
+                    </div>
+                  </div>
+                </div>
+              </div><button type="button" aria-label="Previous slide"
+                class="absolute left-3 md:left-5 top-1/2 -translate-y-1/2 h-10 w-10 md:h-12 md:w-12 rounded-full glass border border-white/15 flex items-center justify-center text-foreground/90 hover:bg-white/10 transition opacity-0 group-hover:opacity-100 focus:opacity-100"><svg
+                  xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  class="lucide lucide-chevron-left h-5 w-5" aria-hidden="true">
+                  <path d="m15 18-6-6 6-6"></path>
+                </svg></button><button type="button" aria-label="Next slide"
+                class="absolute right-3 md:right-5 top-1/2 -translate-y-1/2 h-10 w-10 md:h-12 md:w-12 rounded-full glass border border-white/15 flex items-center justify-center text-foreground/90 hover:bg-white/10 transition opacity-0 group-hover:opacity-100 focus:opacity-100"><svg
+                  xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  class="lucide lucide-chevron-right h-5 w-5" aria-hidden="true">
+                  <path d="m9 18 6-6-6-6"></path>
+                </svg></button>
+            </div>
+            <div class="mt-6 flex items-center justify-center gap-2"><button type="button" aria-label="Go to slide 1"
+                class="h-1.5 rounded-full transition-all duration-300 w-8 bg-primary"></button><button type="button"
+                aria-label="Go to slide 2"
+                class="h-1.5 rounded-full transition-all duration-300 w-2 bg-white/30 hover:bg-white/50"></button><button
+                type="button" aria-label="Go to slide 3"
+                class="h-1.5 rounded-full transition-all duration-300 w-2 bg-white/30 hover:bg-white/50"></button><button
+                type="button" aria-label="Go to slide 4"
+                class="h-1.5 rounded-full transition-all duration-300 w-2 bg-white/30 hover:bg-white/50"></button><button
+                type="button" aria-label="Go to slide 5"
+                class="h-1.5 rounded-full transition-all duration-300 w-2 bg-white/30 hover:bg-white/50"></button></div>
+          </div>
+        </div>
+      </section>
+  </section>
+  <!-- ============================================
+     FOOTER
+     ============================================ -->
+  <footer class="footer">
+
+    <div class="container footer__inner">
+
+      <!-- LEFT -->
+      <div class="footer__brand">
+
+        <img src="./assets/spcx.png" alt="SPACEX69420 Logo" class="footer__brand-logo">
+
+
+
+      </div>
+
+      <!-- RIGHT LINKS -->
+      <div class="footer__links">
+
+        <a href="https://x.com/falconheavycoin" class="footer__link" target="_blank" rel="noopener">
+          <span class="mono">X / TWITTER</span>
+          <span class="arrow">↗</span>
+        </a>
+
+        <a href="https://t.me/falconheavyoneth" class="footer__link" target="_blank" rel="noopener">
+          <span class="mono">TELEGRAM</span>
+          <span class="arrow">↗</span>
+        </a>
+
+        <a href="https://dexscreener.com/ethereum/0xComingSoon" class="footer__link" target="_blank" rel="noopener">
+          <span class="mono">DEXSCREENER</span>
+          <span class="arrow">↗</span>
+        </a>
+
+        <a href="https://dextools.io/app/ether/pair-explorer/0xComingSoon" class="footer__link" target="_blank"
+          rel="noopener">
+          <span class="mono">DEXTOOLS</span>
+          <span class="arrow">↗</span>
+        </a>
+
+      </div>
+    </div>
+
+    <div class="footer__glow"></div>
+
+  </footer>
+  <script src="script.js"></script>
+  <script>
+  const track = document.querySelector(".flex");
+  const slides = track.querySelectorAll(".flex > div");
+  const prevBtn = document.querySelector('[aria-label="Previous slide"]');
+  const nextBtn = document.querySelector('[aria-label="Next slide"]');
+  const dots = document.querySelectorAll('[aria-label^="Go to slide"]');
+
+  let currentIndex = 0;
+  const totalSlides = slides.length;
+
+  function updateCarousel() {
+    track.style.transform = `translate3d(-${currentIndex * 100}%, 0, 0)`;
+    track.style.transition = "transform 0.5s ease";
+
+    dots.forEach((dot, index) => {
+      if (index === currentIndex) {
+        dot.className =
+          "h-1.5 rounded-full transition-all duration-300 w-8 bg-primary";
+      } else {
+        dot.className =
+          "h-1.5 rounded-full transition-all duration-300 w-2 bg-white/30 hover:bg-white/50";
+      }
+    });
+  }
+
+  nextBtn.addEventListener("click", () => {
+    currentIndex = (currentIndex + 1) % totalSlides;
+    updateCarousel();
+  });
+
+  prevBtn.addEventListener("click", () => {
+    currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+    updateCarousel();
+  });
+
+  dots.forEach((dot, index) => {
+    dot.addEventListener("click", () => {
+      currentIndex = index;
+      updateCarousel();
+    });
+  });
+</script>
+</body>
+
+</html>
